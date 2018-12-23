@@ -9,21 +9,30 @@ int list_add_front(struct ll * ll, struct ll_elem * new_elem){
 		next_elem -> prev = new_elem;
 	}
 	ll -> head = new_elem;
+	if(ll -> tail == NULL) ll -> tail = new_elem;
 	new_elem -> next = next_elem;
 	new_elem -> prev = NULL;
 	
+		
 	return 1;
 }
 
 int list_add_back(struct ll * ll, struct ll_elem * new_elem){
-	//struct prev_elem = NULL;
-	//if (ll -> tail != NULL){
-	//	prev_elem = ll -> tail;
-	//}
+	struct ll_elem * prev_elem = NULL;
+	if (ll -> tail != NULL){
+		prev_elem = ll -> tail;
+		prev_elem -> next = new_elem;
+	}
+	ll -> tail = new_elem;
+	if(ll -> head == NULL) ll -> head = new_elem;
+	new_elem -> prev = prev_elem;
+	new_elem -> next = NULL;
 
-
-		
 	return 0;
+}
+
+int list_search(struct ll * ll, int (*cmp_func)(int)){
+
 }
 
 struct ll * ll_init(){

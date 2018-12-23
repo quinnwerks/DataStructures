@@ -10,6 +10,7 @@ struct ll_elem{
 
 struct ll{
 	struct ll_elem * head;
+	struct ll_elem * tail;
 };
 
 int list_add_front(struct ll * ll, struct ll_elem * new_elem);
