@@ -2,9 +2,9 @@ CC = gcc
 
 CFLAGS = -g -Wall -Werror 
 
-SRCS = ll_basic.c
+SRCS = ll_basic.c ll.c 
 
-TARGETS = ll_basic
+INCLUDE = ll.h 
 
 OBJS = $(SRCS:.c=.o) 
 
@@ -14,7 +14,7 @@ all: $(MAIN)
 
 $(MAIN): $(OBJS)	
 	$(CC) -c $(SRCS)
-	$(CC) -o $(MAIN) $(OBJS)
+	$(CC) -o $(MAIN) $(OBJS) -I $(INCLUDE)
 	
 
 .c.o:
