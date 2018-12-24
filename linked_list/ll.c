@@ -43,7 +43,7 @@ struct ll_elem * ll_search(struct ll * ll, void * item, int (*is_eq)(struct ll_e
 	return p;
 }
 
-struct ll_elem * remove_front(struct ll * ll){
+struct ll_elem * ll_remove_front(struct ll * ll){
 	struct ll_elem * p = ll -> head;
 	if(ll -> head == NULL) return NULL;
 	else if(ll -> head == ll -> tail){
@@ -57,7 +57,7 @@ struct ll_elem * remove_front(struct ll * ll){
 	return p;
 }
 
-struct ll_elem * remove_back(struct ll * ll){
+struct ll_elem * ll_remove_back(struct ll * ll){
 	struct ll_elem * p = ll -> tail;
 	if(ll -> tail == NULL) return NULL;
 	else if(ll -> tail == ll -> head){
@@ -71,15 +71,15 @@ struct ll_elem * remove_back(struct ll * ll){
 	return p;
 }
 
-struct ll_elem * list_extract(struct ll * ll, void * item, int (*is_eq)(struct ll_elem *, void *)){
+struct ll_elem * ll_remove(struct ll * ll, void * item, int (*is_eq)(struct ll_elem *, void *)){
 	struct ll_elem * extract_this = ll_search(ll, item, is_eq);
 	if(extract_this == NULL) return NULL;
 
 	struct ll_elem * next = extract_this -> next;
 	struct ll_elem * prev = extract_this -> prev;
 
-	if(extract_this == ll -> head) extract_this = remove_front(ll);
-	else if(extract_this == ll -> tail) extract_this = remove_back(ll);
+	if(extract_this == ll -> head) extract_this = ll_remove_front(ll);
+	else if(extract_this == ll -> tail) extract_this = ll_remove_back(ll);
 	else{
 		next -> prev = prev;
 		prev -> next = next;
