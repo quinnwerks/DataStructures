@@ -3,9 +3,13 @@
         const typeof( ((type *)0)->member ) *__mptr = (ptr); \
         (type *)( (char *)__mptr - offsetof(type,member) );})
 
+#define _swap(a, b, swap)({\
+		swap = a; \
+		a = b; \
+		b = swap ;})
+
 int ll_add_front(struct ll * ll, struct ll_elem * new_elem){
 	struct ll_elem * next_elem = NULL;
-	//if non-empty list
 	if(ll -> head != NULL){ 
 		next_elem = ll -> head;
 		next_elem -> prev = new_elem;
@@ -15,7 +19,6 @@ int ll_add_front(struct ll * ll, struct ll_elem * new_elem){
 	new_elem -> next = next_elem;
 	new_elem -> prev = NULL;
 	
-		
 	return 1;
 }
 
@@ -25,12 +28,13 @@ int ll_add_back(struct ll * ll, struct ll_elem * new_elem){
 		prev_elem = ll -> tail;
 		prev_elem -> next = new_elem;
 	}
+
 	ll -> tail = new_elem;
 	if(ll -> head == NULL) ll -> head = new_elem;
 	new_elem -> prev = prev_elem;
 	new_elem -> next = NULL;
 
-	return 0;
+	return 1;
 }
 
 struct ll_elem * ll_search(struct ll * ll, void * item, int (*is_eq)(struct ll_elem *, void *)){
@@ -89,6 +93,18 @@ struct ll_elem * ll_remove(struct ll * ll, void * item, int (*is_eq)(struct ll_e
 	extract_this -> prev = NULL;
 	
 	return extract_this;
+}
+
+void ll_reverse(struct ll * ll){
+	struct ll_elem * p = ll -> head;
+	struct ll_elem * swap = NULL;
+	if(p == NULL) return;
+
+	while(p != NULL){
+		_swap(p -> next, p -> prev, swap);
+		p = swap;
+	}
+	_swap(p -> next, p -> prev, swap);
 }
 
 struct ll * ll_init(){
