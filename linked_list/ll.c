@@ -101,10 +101,11 @@ void ll_reverse(struct ll * ll){
 	if(p == NULL) return;
 
 	while(p != NULL){
+		struct element * next_reverse = p -> next;
 		_swap(p -> next, p -> prev, swap);
-		p = swap;
+		p = next_reverse;
 	}
-	_swap(p -> next, p -> prev, swap);
+	_swap(ll -> head, ll -> tail, swap);
 }
 
 struct ll * ll_init(){
