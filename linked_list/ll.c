@@ -3,10 +3,24 @@
         const typeof( ((type *)0)->member ) *__mptr = (ptr); \
         (type *)( (char *)__mptr - offsetof(type,member) );})
 
-#define _swap(a, b, swap)({\
+#define _swap(a, b, swap)({ \
 		swap = a; \
 		a = b; \
 		b = swap ;})
+
+struct ll * ll_init(){
+	struct ll * new_ll = NULL;
+	new_ll = (struct ll *)malloc(sizeof(struct ll));
+	
+	if(new_ll == NULL){
+		perror("ERROR: not enough memory for creation of ll\n");
+		return NULL;
+	}
+	new_ll -> head = NULL;
+	new_ll -> tail = NULL;
+
+	return new_ll;
+}
 
 int ll_add_front(struct ll * ll, struct ll_elem * new_elem){
 	struct ll_elem * next_elem = NULL;
@@ -79,14 +93,14 @@ struct ll_elem * ll_remove(struct ll * ll, void * item, int (*is_eq)(struct ll_e
 	struct ll_elem * extract_this = ll_search(ll, item, is_eq);
 	if(extract_this == NULL) return NULL;
 
-	struct ll_elem * next = extract_this -> next;
-	struct ll_elem * prev = extract_this -> prev;
+	struct ll_elem * next_elem = extract_this -> next;
+	struct ll_elem * prev_elem = extract_this -> prev;
 
 	if(extract_this == ll -> head) extract_this = ll_remove_front(ll);
 	else if(extract_this == ll -> tail) extract_this = ll_remove_back(ll);
 	else{
-		next -> prev = prev;
-		prev -> next = next;
+		next_elem -> prev = prev_elem;
+		prev_elem -> next = next_elem;
 	}
 
 	extract_this -> next = NULL;
@@ -101,24 +115,13 @@ void ll_reverse(struct ll * ll){
 	if(p == NULL) return;
 
 	while(p != NULL){
-		struct element * next_reverse = p -> next;
+		struct ll_elem * next_reverse = p -> next;
 		_swap(p -> next, p -> prev, swap);
 		p = next_reverse;
 	}
 	_swap(ll -> head, ll -> tail, swap);
 }
 
-struct ll * ll_init(){
-	struct ll * new_ll = NULL;
-	new_ll = (struct ll *)malloc(sizeof(struct ll));
-	
-	if(new_ll == NULL){
-		perror("ERROR: not enough memory for creation of ll\n");
-		return NULL;
-	}
-	new_ll -> head = NULL;
 
-	return new_ll;
-}
 
 

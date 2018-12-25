@@ -16,6 +16,9 @@ struct ll{
 	struct ll_elem * tail;
 };
 
+//initialize the doubly linked list and return it
+struct ll * ll_init();
+
 //add an element to the front of the list
 int ll_add_front(struct ll * ll, struct ll_elem * new_elem);
 
@@ -39,8 +42,5 @@ struct ll_elem * ll_extract(struct ll * ll, void * item,
 
 //reverse the linked list ll 
 void ll_reverse(struct ll * ll);
-
-//initialize the doubly linked list and return it
-struct ll * ll_init();
 
 #endif
