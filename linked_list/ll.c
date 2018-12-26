@@ -1,15 +1,14 @@
 #include "ll.h"
 
-
-
 struct ll * ll_init(){
 	struct ll * new_ll = NULL;
+
 	new_ll = (struct ll *)malloc(sizeof(struct ll));
-	
 	if(new_ll == NULL){
 		perror("ERROR: not enough memory for creation of ll\n");
 		return NULL;
 	}
+
 	new_ll -> head = NULL;
 	new_ll -> tail = NULL;
 
@@ -24,6 +23,7 @@ int ll_add_front(struct ll * ll, struct ll_elem * new_elem){
 	}
 	ll -> head = new_elem;
 	if(ll -> tail == NULL) ll -> tail = new_elem;
+
 	new_elem -> next = next_elem;
 	new_elem -> prev = NULL;
 	
@@ -36,9 +36,9 @@ int ll_add_back(struct ll * ll, struct ll_elem * new_elem){
 		prev_elem = ll -> tail;
 		prev_elem -> next = new_elem;
 	}
-
 	ll -> tail = new_elem;
 	if(ll -> head == NULL) ll -> head = new_elem;
+
 	new_elem -> prev = prev_elem;
 	new_elem -> next = NULL;
 
@@ -52,6 +52,7 @@ struct ll_elem * ll_search(struct ll * ll, void * item, int (*is_eq)(struct ll_e
 			return p;
 		p = p -> next;
 	}
+
 	return NULL;
 }
 
@@ -66,6 +67,7 @@ struct ll_elem * ll_remove_front(struct ll * ll){
 		ll -> head = ll -> head -> next;
 		p -> next -> prev = NULL;
 	}
+	
 	p -> prev = NULL;
 	p -> next = NULL;
 
@@ -119,6 +121,7 @@ void ll_reverse(struct ll * ll){
 		__swap(p -> next, p -> prev, swap);
 		p = next_reverse;
 	}
+
 	__swap(ll -> head, ll -> tail, swap);
 }
 
