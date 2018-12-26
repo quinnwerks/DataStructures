@@ -1,9 +1,6 @@
 #include "ll.h"
 
-#define _swap(a, b, swap)({ \
-		swap = a; \
-		a = b; \
-		b = swap ;})
+
 
 struct ll * ll_init(){
 	struct ll * new_ll = NULL;
@@ -119,10 +116,10 @@ void ll_reverse(struct ll * ll){
 
 	while(p != NULL){
 		struct ll_elem * next_reverse = p -> next;
-		_swap(p -> next, p -> prev, swap);
+		__swap(p -> next, p -> prev, swap);
 		p = next_reverse;
 	}
-	_swap(ll -> head, ll -> tail, swap);
+	__swap(ll -> head, ll -> tail, swap);
 }
 
 

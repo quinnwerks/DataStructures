@@ -4,7 +4,7 @@ CFLAGS = -g -Wall -Werror
 
 SRCS = ll_basic.c ll.c 
 
-INCLUDE = ll.h 
+INCLUDE = -I ../linked_list ../include/common.h
 
 OBJS = $(SRCS:.c=.o) 
 
@@ -14,7 +14,7 @@ all: $(MAIN)
 
 $(MAIN): $(OBJS)	
 	$(CC) -c $(SRCS)
-	$(CC) -o $(MAIN) $(OBJS) -I $(INCLUDE)
+	$(CC) -o $(MAIN) $(OBJS)  $(INCLUDE)
 	
 
 .c.o:

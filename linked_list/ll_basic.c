@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include "ll.h"
 
-#define offsetof(st, m) __builtin_offsetof(st, m)
-#define container_of(ptr, type, member) ({ \
-        const typeof( ((type *)0)->member ) *__mptr = (ptr); \
-        (type *)( (char *)__mptr - offsetof(type,member) );})
+
 
 struct ll_int{
 	int data;
@@ -18,14 +15,14 @@ int ll_int_eq(int a, int b){
 int ll_int_eq_wrapper(struct  ll_elem * elem, void * v_integer){
 	struct ll_int * container;
 	int integer = *((int *)v_integer);
-	container = container_of(elem, struct ll_int, ptr);
+	container = __container_of(elem, struct ll_int, ptr);
 	return ll_int_eq(container -> data, integer);
 }
 
 //DO NOT USE IN ANYTHING OTHER THAN INT_TEST!!!!
 int int_test_remove(struct ll * ll, int search_num, int was_there){
 	struct ll_elem * pp = ll_remove(ll, &search_num, &ll_int_eq_wrapper);
-	struct ll_int * p_container = container_of(pp, struct ll_int, ptr);
+	struct ll_int * p_container = __container_of(pp, struct ll_int, ptr);
 	if(was_there){
 		if(p_container -> data != search_num) return 0;
 	}
@@ -53,7 +50,7 @@ int int_test(){
 	struct ll_int * p_container;
 	int i = 0;
 	while(p != NULL){
-		p_container = container_of(p, struct ll_int, ptr);
+		p_container = __container_of(p, struct ll_int, ptr);
 		if(i == p_container -> data){
 			i++;
 			p = p -> next;
@@ -93,6 +90,7 @@ int int_test(){
 	}
 	if (ll-> head == NULL && ll -> head == ll -> tail){
 		printf("\tOK\n");
+		printf("Success! int_test passed.\n");
 		goto success_int;
 
 	} 
@@ -176,7 +174,56 @@ int basic_test(){
 	return exit_code;
 }
 
+int reverse_test(){
+	printf("Starting reverse test\n");
+	int exit_code = 0;
+	const int NUM_ELEMENTS = 10000;
+	struct ll * ll = ll_init();
+	for(int i = 0; i < NUM_ELEMENTS; i++){
+		struct ll_int * new_elem = (struct ll_int *) malloc(sizeof(struct ll_int));
+		new_elem -> data = i;
+		new_elem -> ptr.next = NULL;
+		new_elem -> ptr.prev = NULL;
+		ll_add_back(ll, &new_elem -> ptr);
+	}
+	ll_reverse(ll);
+	int count = NUM_ELEMENTS - 1;
+	struct ll_elem * p = ll -> head;
+	while(p != NULL){
+		struct ll_int * container = __container_of(p, struct ll_int, ptr);
+		if(container -> data !=  count){
+			printf("Container value %d != %d", container -> data, count);
+			goto failure_reverse;
+		}
+		else{
+			count--;
+			p = p -> next;
+		}
+	}
+	printf("\tOK\n");
+	printf("Testing freeing of contianers after dynamic allocation\n");
+	struct ll_int * p_container;
+	while(ll -> tail != NULL){
+		p_container = __container_of(ll_remove_back(ll), struct ll_int, ptr);
+		if(p_container != NULL) free(p_container);
+	}
+	if (ll -> head == ll -> tail && ll-> head == NULL){
+		printf("\tOK\n");
+		printf("Success! reverse_test passed.\n");
+		goto success_reverse;
+	} 
+
+	failure_reverse:
+	printf("\tFAIL\n\tStopping...\n");
+	exit_code = 1;
+	success_reverse:
+	free(ll);
+	return exit_code;
+}
 
 int main(){
-	return int_test();
+	int exit_code = 0;
+	int count = basic_test() + int_test() + reverse_test();
+	if(count != 0) exit_code = 1; 
+	return exit_code;
 }
