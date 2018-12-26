@@ -55,7 +55,7 @@ struct ll_elem * ll_search(struct ll * ll, void * item, int (*is_eq)(struct ll_e
 			return p;
 		p = p -> next;
 	}
-	return p;
+	return NULL;
 }
 
 struct ll_elem * ll_remove_front(struct ll * ll){
@@ -67,7 +67,10 @@ struct ll_elem * ll_remove_front(struct ll * ll){
 	}
 	else{
 		ll -> head = ll -> head -> next;
+		p -> next -> prev = NULL;
 	}
+	p -> prev = NULL;
+	p -> next = NULL;
 
 	return p;
 }
@@ -81,7 +84,10 @@ struct ll_elem * ll_remove_back(struct ll * ll){
 	}
 	else{
 		ll-> tail = ll -> tail -> prev;
+		p -> prev -> next = NULL;
 	}
+	p -> next = NULL;
+	p -> prev = NULL;
 
 	return p;
 }

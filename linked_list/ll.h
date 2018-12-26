@@ -37,7 +37,7 @@ struct ll_elem * ll_remove_front(struct ll * ll);
 struct ll_elem * ll_remove_back(struct ll * ll);
 
 //returns and removes an element equal to some item
-struct ll_elem * ll_extract(struct ll * ll, void * item, 
+struct ll_elem * ll_remove(struct ll * ll, void * item, 
 								int (*is_eq)(struct ll_elem *, void *));
 
 //reverse the linked list ll 
